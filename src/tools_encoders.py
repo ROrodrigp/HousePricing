@@ -42,10 +42,6 @@ def apply_ordinal_encoding(df):
     
     return df_encoded
 
-    # Ejemplo de uso
-    # df_train = apply_ordinal_encoding(df_train)
-    # print(df_train.head())
-
 def apply_one_hot_encoding(df):
     """
     Aplica One-Hot Encoding a las columnas nominales de un DataFrame.
@@ -71,8 +67,3 @@ def apply_one_hot_encoding(df):
     df_encoded = pd.get_dummies(df_encoded, columns=nominal_columns)
     
     return df_encoded
-
-    # Ejemplo de uso
-    # df_train = apply_ordinal_encoding(df_train)
-    # df_train = apply_one_hot_encoding(df_train)
-    # print(df_train.head())
