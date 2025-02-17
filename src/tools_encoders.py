@@ -1,10 +1,11 @@
 from sklearn.preprocessing import OrdinalEncoder
 import pandas as pd
 
+
 def apply_ordinal_encoding(df):
     """
     Aplica el encoding ordinal a un DataFrame utilizando un diccionario de mapeo predefinido.
-    
+
     :param df: DataFrame a transformar.
     :return: DataFrame con las variables ordinales codificadas.
     """
@@ -29,23 +30,27 @@ def apply_ordinal_encoding(df):
         "Utilities": ['NoSeWa', 'AllPub'],
         "PavedDrive": ['N', 'P', 'Y']
     }
-    
+
     df_encoded = df.copy()
-    
+
     # Reemplazar valores NaN con "None" antes de codificar
     for col in ordinal_mappings.keys():
-        df_encoded[col] = df_encoded[col].fillna('None')  # "None" representa NA explícitamente
-    
+        df_encoded[col] = df_encoded[col].fillna(
+            'None')  # "None" representa NA explícitamente
+
     # Aplicar Ordinal Encoding
-    encoder = OrdinalEncoder(categories=[ordinal_mappings[col] for col in ordinal_mappings])
-    df_encoded[list(ordinal_mappings.keys())] = encoder.fit_transform(df_encoded[list(ordinal_mappings.keys())])
-    
+    encoder = OrdinalEncoder(
+        categories=[ordinal_mappings[col] for col in ordinal_mappings])
+    df_encoded[list(ordinal_mappings.keys())] = encoder.fit_transform(
+        df_encoded[list(ordinal_mappings.keys())])
+
     return df_encoded
+
 
 def apply_one_hot_encoding(df):
     """
     Aplica One-Hot Encoding a las columnas nominales de un DataFrame.
-    
+
     :param df: DataFrame a transformar.
     :return: DataFrame con las variables nominales codificadas con One-Hot Encoding.
     """
@@ -56,14 +61,14 @@ def apply_one_hot_encoding(df):
         'Foundation', 'Heating', 'CentralAir', 'Electrical', 'Functional',
         'GarageType', 'MiscFeature', 'SaleType', 'SaleCondition'
     ]
-    
+
     df_encoded = df.copy()
-    
+
     # Reemplazar valores NaN con "None" antes de aplicar One-Hot Encoding
     for col in nominal_columns:
         df_encoded[col] = df_encoded[col].fillna('None')
-    
+
     # Aplicar One-Hot Encoding
     df_encoded = pd.get_dummies(df_encoded, columns=nominal_columns)
-    
+
     return df_encoded
