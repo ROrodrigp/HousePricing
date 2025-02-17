@@ -1,0 +1,47 @@
+from sklearn.preprocessing import OrdinalEncoder
+import pandas as pd
+
+def apply_ordinal_encoding(df):
+    """
+    Aplica el encoding ordinal a un DataFrame utilizando un diccionario de mapeo predefinido.
+    
+    :param df: DataFrame a transformar.
+    :return: DataFrame con las variables ordinales codificadas.
+    """
+    ordinal_mappings = {
+        "ExterQual": ['Fa', 'TA', 'Gd', 'Ex'],
+        "ExterCond": ['Po', 'Fa', 'TA', 'Gd', 'Ex'],
+        "BsmtQual": ['None', 'Fa', 'TA', 'Gd', 'Ex'],
+        "BsmtCond": ['None', 'Po', 'Fa', 'TA', 'Gd'],
+        "BsmtExposure": ['None', 'No', 'Mn', 'Av', 'Gd'],
+        "BsmtFinType1": ['None', 'Unf', 'LwQ', 'Rec', 'BLQ', 'ALQ', 'GLQ'],
+        "BsmtFinType2": ['None', 'Unf', 'LwQ', 'Rec', 'BLQ', 'ALQ', 'GLQ'],
+        "HeatingQC": ['Po', 'Fa', 'TA', 'Gd', 'Ex'],
+        "KitchenQual": ['Fa', 'TA', 'Gd', 'Ex'],
+        "FireplaceQu": ['None', 'Po', 'Fa', 'TA', 'Gd', 'Ex'],
+        "GarageQual": ['None', 'Po', 'Fa', 'TA', 'Gd', 'Ex'],
+        "GarageCond": ['None', 'Po', 'Fa', 'TA', 'Gd', 'Ex'],
+        "GarageFinish": ['None', 'Unf', 'RFn', 'Fin'],
+        "PoolQC": ['None', 'Fa', 'Gd', 'Ex'],
+        "Fence": ['None', 'MnWw', 'MnPrv', 'GdWo', 'GdPrv'],
+        "LotShape": ['IR3', 'IR2', 'IR1', 'Reg'],
+        "LandSlope": ['Gtl', 'Mod', 'Sev'],
+        "Utilities": ['NoSeWa', 'AllPub'],
+        "PavedDrive": ['N', 'P', 'Y']
+    }
+    
+    df_encoded = df.copy()
+    
+    # Reemplazar valores NaN con "None" antes de codificar
+    for col in ordinal_mappings.keys():
+        df_encoded[col] = df_encoded[col].fillna('None')  # "None" representa NA explícitamente
+    
+    # Aplicar Ordinal Encoding
+    encoder = OrdinalEncoder(categories=[ordinal_mappings[col] for col in ordinal_mappings])
+    df_encoded[list(ordinal_mappings.keys())] = encoder.fit_transform(df_encoded[list(ordinal_mappings.keys())])
+    
+    return df_encoded
+
+# Ejemplo de uso
+# df_train = apply_ordinal_encoding(df_train)
+# print(df_train.head())
