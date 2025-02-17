@@ -45,3 +45,34 @@ def apply_ordinal_encoding(df):
 # Ejemplo de uso
 # df_train = apply_ordinal_encoding(df_train)
 # print(df_train.head())
+
+def apply_one_hot_encoding(df):
+    """
+    Aplica One-Hot Encoding a las columnas nominales de un DataFrame.
+    
+    :param df: DataFrame a transformar.
+    :return: DataFrame con las variables nominales codificadas con One-Hot Encoding.
+    """
+    nominal_columns = [
+        'MSZoning', 'Street', 'Alley', 'LandContour', 'LotConfig',
+        'Neighborhood', 'Condition1', 'Condition2', 'BldgType', 'HouseStyle',
+        'RoofStyle', 'RoofMatl', 'Exterior1st', 'Exterior2nd', 'MasVnrType',
+        'Foundation', 'Heating', 'CentralAir', 'Electrical', 'Functional',
+        'GarageType', 'MiscFeature', 'SaleType', 'SaleCondition'
+    ]
+    
+    df_encoded = df.copy()
+    
+    # Reemplazar valores NaN con "None" antes de aplicar One-Hot Encoding
+    for col in nominal_columns:
+        df_encoded[col] = df_encoded[col].fillna('None')
+    
+    # Aplicar One-Hot Encoding
+    df_encoded = pd.get_dummies(df_encoded, columns=nominal_columns)
+    
+    return df_encoded
+
+# Ejemplo de uso
+# df_train = apply_ordinal_encoding(df_train)
+# df_train = apply_one_hot_encoding(df_train)
+# print(df_train.head())
