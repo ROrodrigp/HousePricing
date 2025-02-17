@@ -42,9 +42,9 @@ def apply_ordinal_encoding(df):
     
     return df_encoded
 
-# Ejemplo de uso
-# df_train = apply_ordinal_encoding(df_train)
-# print(df_train.head())
+    # Ejemplo de uso
+    # df_train = apply_ordinal_encoding(df_train)
+    # print(df_train.head())
 
 def apply_one_hot_encoding(df):
     """
@@ -72,7 +72,7 @@ def apply_one_hot_encoding(df):
     
     return df_encoded
 
-# Ejemplo de uso
-# df_train = apply_ordinal_encoding(df_train)
-# df_train = apply_one_hot_encoding(df_train)
-# print(df_train.head())
+    # Ejemplo de uso
+    # df_train = apply_ordinal_encoding(df_train)
+    # df_train = apply_one_hot_encoding(df_train)
+    # print(df_train.head())
