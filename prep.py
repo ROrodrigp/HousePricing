@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import pandas as pd
 from src.tools_clean_data import clean_data
 from src.tools_encoders import apply_one_hot_encoding, apply_ordinal_encoding
@@ -28,7 +29,15 @@ def process_raw_data(input_file, output_file):
     print(f"Archivo procesado guardado en: {output_file}")
 
 
-# Ejecutar el procesamiento
-df_input = "data/raw.csv"
-df_output = "data/prep.csv"
-process_raw_data(df_input, df_output)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(
+        description="Procesa datos crudos aplicando transformaciones y guardando el resultado.")
+    parser.add_argument("--input", type=str, required=True,
+                        help="Ruta del archivo CSV de entrada (raw.csv).")
+    parser.add_argument("--output", type=str, required=True,
+                        help="Ruta del archivo CSV de salida (prep.csv).")
+
+    # Ejecutar el procesamiento
+    args = parser.parse_args()
+
+    process_raw_data(args.input, args.output)
