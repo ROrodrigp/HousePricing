@@ -3,6 +3,7 @@
 import pandas as pd
 from src.tools_clean_data import clean_data
 from src.tools_encoders import apply_one_hot_encoding, apply_ordinal_encoding
+from src.tools_engine_variables import apply_log_transform
 
 
 def process_raw_data(input_file, output_file):
@@ -18,6 +19,7 @@ def process_raw_data(input_file, output_file):
     # Aplicar transformaciones
     df = apply_ordinal_encoding(df)
     df = apply_one_hot_encoding(df)
+    df = apply_log_transform(df, "SalePrice")
     df = clean_data(df)
 
     # Guardar el resultado en un nuevo archivo CSV
