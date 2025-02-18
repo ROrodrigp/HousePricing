@@ -11,6 +11,7 @@ modelo utilizando pickle.
 
 import pickle
 import pandas as pd
+import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.metrics import mean_absolute_error
@@ -58,8 +59,14 @@ grid_search.fit(X_train, y_train)
 best_model = grid_search.best_estimator_
 
 # Evaluar en el conjunto de prueba
-y_pred = best_model.predict(X_test)
-mae = mean_absolute_error(y_test, y_pred)
+y_pred_log = best_model.predict(X_test)
+
+# Revertimos la transformación logarítmica
+y_test_original = np.expm1(y_test)
+y_pred_original = np.expm1(y_pred_log)
+
+
+mae = mean_absolute_error(y_test_original, y_pred_original)
 print(f"MAE del mejor modelo en test set: {mae:.4f}")
 
 # Guardar el modelo serializado con pickle

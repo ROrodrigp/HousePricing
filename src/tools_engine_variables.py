@@ -7,7 +7,7 @@ la varianza y mejorar la normalidad de los datos.
 """
 
 import numpy as np
-import pandas as pd
+
 
 def apply_log_transform(df, target_col):
     """
@@ -19,8 +19,8 @@ def apply_log_transform(df, target_col):
     """
     if target_col not in df.columns:
         raise ValueError(f"La columna '{target_col}' no está en el DataFrame.")
-    
+
     df_transformed = df.copy()
     df_transformed[f"{target_col}_Log"] = np.log1p(df_transformed[target_col])
-    
+
     return df_transformed
