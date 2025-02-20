@@ -17,6 +17,7 @@ import argparse
 import pickle
 import pandas as pd
 import os
+import numpy as np
 from src.preprocessing.process_data import process_raw_data
 
 
@@ -95,7 +96,9 @@ def make_predictions(input_file, model_file, output_file):
         model = load_model(model_file)
 
         # 5. Hacer predicciones con X_test (ya alineado)
-        predictions = model.predict(X_test)
+        predictions_log = model.predict(X_test)
+
+        predictions = np.expm1(predictions_log)
 
         # 6. Guardar predicciones en un CSV
         #    Usamos la columna "Id" de df_processed, si está presente.
