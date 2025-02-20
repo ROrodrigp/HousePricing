@@ -98,9 +98,10 @@ def make_predictions(input_file, model_file, output_file):
         # 5. Hacer predicciones con X_test (ya alineado)
         predictions_log = model.predict(X_test)
 
+        # 6. Revertir la funcion logaritmica
         predictions = np.expm1(predictions_log)
 
-        # 6. Guardar predicciones en un CSV
+        # 7. Guardar predicciones en un CSV
         #    Usamos la columna "Id" de df_processed, si está presente.
         df_predictions = pd.DataFrame({
             "Id": df_processed.get("Id", range(len(predictions))),

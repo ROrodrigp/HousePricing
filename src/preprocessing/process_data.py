@@ -24,7 +24,7 @@ def process_raw_data(input_file, output_file):
     df = apply_ordinal_encoding(df)
     df = apply_one_hot_encoding(df)
 
-    # Solo aplicar log transform si 'SalePrice' está presente
+    # Solo transformar si la variable esta presente
     if "SalePrice" in df.columns:
         df = apply_log_transform(df, "SalePrice")
 
