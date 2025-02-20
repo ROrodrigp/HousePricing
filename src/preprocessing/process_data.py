@@ -23,7 +23,11 @@ def process_raw_data(input_file, output_file):
     # Aplicar transformaciones
     df = apply_ordinal_encoding(df)
     df = apply_one_hot_encoding(df)
-    df = apply_log_transform(df, "SalePrice")
+
+    # Solo aplicar log transform si 'SalePrice' está presente
+    if "SalePrice" in df.columns:
+        df = apply_log_transform(df, "SalePrice")
+
     df = clean_data(df)
 
     # Guardar el resultado en un nuevo archivo CSV
