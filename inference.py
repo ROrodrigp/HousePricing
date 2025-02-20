@@ -82,7 +82,7 @@ def make_predictions(input_file, model_file, output_file):
         # Para el DataFrame de test preprocesado (df_processed), también
         # quitamos 'Id' y 'SalePrice' (en caso de que exista 'SalePrice').
         X_test = df_processed.drop(
-            columns=["Id", "SalePrice"], errors="ignore")
+            columns=["Id"], errors="ignore")
 
         # Alinear para que X_test tenga exactamente las mismas columnas que train_features.
         train_features, X_test = train_features.align(
