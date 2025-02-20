@@ -6,6 +6,10 @@ def apply_ordinal_encoding(df):
     """
     Aplica el encoding ordinal a un DataFrame utilizando un diccionario de mapeo predefinido.
 
+    - Reemplaza NaN con "None" solo en las columnas que incluyen 'None' en su lista de categorías.
+    - Elimina filas que aún tengan NaN en cualquiera de las columnas ordinales.
+    - Ajusta y transforma dichas columnas con OrdinalEncoder.
+
     :param df: DataFrame a transformar.
     :return: DataFrame con las variables ordinales codificadas.
     """
@@ -37,7 +41,10 @@ def apply_ordinal_encoding(df):
     for col in ordinal_mappings.keys():
         if 'None' in ordinal_mappings[col]:
             df_encoded[col] = df_encoded[col].fillna(
-                'None')  # "None" representa NA explícitamente
+                'None')
+
+    # Eliminar filas que todavía tengan NaN en cualquiera de las columnas ordinales
+    df_encoded.dropna(subset=ordinal_mappings.keys(), inplace=True)
 
     # Aplicar Ordinal Encoding
     encoder = OrdinalEncoder(
