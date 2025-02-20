@@ -4,7 +4,7 @@
 Script para hacer predicciones usando un modelo entrenado.
 
 Uso:
-    python predict.py --input data/test.csv --model best_random_forest_model.pkl --output predictions.csv
+    python inference.py --input data/test.csv --model models/best_random_forest_model.pkl --output data/predictions.csv
 
 Este script:
 1. Lee un archivo CSV con datos sin procesar.
@@ -54,38 +54,58 @@ def make_predictions(input_file, model_file, output_file):
             f"ERROR: El archivo de entrada '{input_file}' no existe.")
 
     try:
-        # 1. Preprocesar los datos
+        # 1. Preprocesar los datos de entrada (test)
         processed_file = "temp_processed.csv"  # Archivo temporal
         process_raw_data(input_file, processed_file)
 
-        # 2. Cargar datos preprocesados
+        # 2. Cargar datos preprocesados de test
         df_processed = pd.read_csv(processed_file)
-
         if df_processed.empty:
             raise ValueError(
-                "ERROR: El DataFrame procesado está vacío. Revisa el preprocesamiento.")
+                "ERROR: El DataFrame procesado está vacío. Revisa el preprocesamiento."
+            )
 
-        # 3. Cargar modelo entrenado
+        # 3. Cargar el DataFrame 'prep.csv' con el que se entrenó el modelo
+        #    (ya tiene las columnas exactas que el modelo vio en training).
+        train_df = pd.read_csv("data/prep.csv")
+        if train_df.empty:
+            raise ValueError(
+                "ERROR: El DataFrame de entrenamiento (prep.csv) está vacío o no se cargó correctamente."
+            )
+
+        # --- Alinear columnas ---
+        # Quitar columnas que no sean features en train_df (por ejemplo, 'Id' y 'SalePrice').
+        # Dejas SOLO las columnas que se usaron como features en el entrenamiento.
+        train_features = train_df.drop(
+            columns=["Id", "SalePrice", "SalePrice_Log"], errors="ignore")
+
+        # Para el DataFrame de test preprocesado (df_processed), también
+        # quitamos 'Id' y 'SalePrice' (en caso de que exista 'SalePrice').
+        X_test = df_processed.drop(
+            columns=["Id", "SalePrice"], errors="ignore")
+
+        # Alinear para que X_test tenga exactamente las mismas columnas que train_features.
+        train_features, X_test = train_features.align(
+            X_test, join="left", axis=1)
+
+        # Rellenar con 0 los valores NaN que aparezcan en X_test
+        X_test = X_test.fillna(0)
+
+        # 4. Cargar modelo entrenado
         model = load_model(model_file)
 
-        # 4. Hacer predicciones
-        # Eliminar ID si está presente
-        X = df_processed.drop(columns=["Id"], errors="ignore")
+        # 5. Hacer predicciones con X_test (ya alineado)
+        predictions = model.predict(X_test)
 
-        if X.empty:
-            raise ValueError(
-                "ERROR: No hay columnas predictoras después del preprocesamiento.")
-
-        predictions = model.predict(X)
-
-        # 5. Guardar predicciones en un CSV
+        # 6. Guardar predicciones en un CSV
+        #    Usamos la columna "Id" de df_processed, si está presente.
         df_predictions = pd.DataFrame({
-            # Si no hay Id, se genera un índice
             "Id": df_processed.get("Id", range(len(predictions))),
             "SalePrice_Predicted": predictions
         })
         df_predictions.to_csv(output_file, index=False)
 
+        print(f"Archivo procesado guardado en: {processed_file}")
         print(f"Predicciones guardadas en: {output_file}")
 
     except FileNotFoundError as fnf_error:
