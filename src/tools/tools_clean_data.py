@@ -25,6 +25,7 @@ def clean_data(df):
     df_cleaned = df_cleaned.drop(columns=['GarageYrBlt'])
 
     # Eliminar cualquier otro nulo restante
+    df_cleaned = df_cleaned.dropna()
 
 
     return df_cleaned
