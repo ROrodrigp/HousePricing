@@ -15,8 +15,5 @@ RUN conda env create -f environment.yml && conda clean --all -y
 # Establecer el entorno Conda como predeterminado
 ENV PATH /opt/conda/envs/arquitectura/bin:$PATH
 
-# Crear un volumen dentro del contenedor para almacenar el modelo
-VOLUME /app/output
-
 # Definir el comando de ejecución
 ENTRYPOINT ["python", "train.py"]

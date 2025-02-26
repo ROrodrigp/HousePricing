@@ -1,0 +1,22 @@
+# Usa Miniconda como imagen base
+FROM continuumio/miniconda3
+
+# Configurar el directorio de trabajo dentro del contenedor
+WORKDIR /app
+
+# Copiar los archivos necesarios
+COPY inference.py .
+COPY src ./src   
+COPY models ./models
+COPY data ./data
+COPY environment.yml .
+
+# Crear el entorno Conda dentro del contenedor
+RUN conda env create -f environment.yml && conda clean --all -y
+
+# Establecer el entorno Conda como predeterminado
+ENV PATH /opt/conda/envs/arquitectura/bin:$PATH
+
+# Definir el comando de ejecución
+ENTRYPOINT ["python", "inference.py"]
+
