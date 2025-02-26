@@ -76,7 +76,62 @@ docker run --rm -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data -v $(pwd)/
 
 ---
 
-## Verificación de Resultados
+## 3. Descripción de los Dockerfiles y Uso de Conda
+
+El proyecto usa dos `Dockerfile` ubicados en `docker/`:
+
+### **Dockerfile para entrenamiento (`Dockerfile.train`)**
+
+```dockerfile
+FROM continuumio/miniconda3
+
+WORKDIR /app
+
+COPY ../train.py .
+COPY ../src ./src
+COPY ../data ./data
+COPY ../docker/environment.yml .
+
+RUN conda env create -f environment.yml && conda clean --all -y
+
+ENV PATH /opt/conda/envs/arquitectura/bin:$PATH
+
+ENTRYPOINT ["python", "train.py"]
+CMD ["--input", "data/prep.csv", "--output", "models/best_random_forest_model.pkl"]
+```
+
+### **Dockerfile para inferencia (`Dockerfile.inference`)**
+
+```dockerfile
+FROM continuumio/miniconda3
+
+WORKDIR /app
+
+COPY ../inference.py .
+COPY ../src ./src
+COPY ../models ./models
+COPY ../data ./data
+COPY ../docker/environment.yml .
+
+RUN conda env create -f environment.yml && conda clean --all -y
+
+ENV PATH /opt/conda/envs/arquitectura/bin:$PATH
+
+ENTRYPOINT ["python", "inference.py"]
+CMD ["--input", "data/test.csv", "--output", "data/predictions.csv"]
+```
+
+### **Uso de Conda en los Contenedores**
+Ambos `Dockerfile` utilizan `Miniconda` para gestionar dependencias de Python. Se usa:
+- `FROM continuumio/miniconda3` para partir de una imagen base con Conda.
+- `RUN conda env create -f environment.yml && conda clean --all -y` para crear un entorno con los paquetes requeridos.
+- `ENV PATH /opt/conda/envs/arquitectura/bin:$PATH` para que el entorno Conda `arquitectura` sea el predeterminado dentro del contenedor.
+
+Esto asegura que todas las dependencias sean instaladas correctamente y el entorno sea consistente entre el contenedor de entrenamiento e inferencia.
+
+---
+
+## 4. Verificación de Resultados
 Después de ejecutar los contenedores, revisa:
 - **Modelo entrenado:**
   ```sh
@@ -91,10 +146,9 @@ Después de ejecutar los contenedores, revisa:
 
 ![Docker evidence run](../docs/imgs/evidence.png)
 
-
 ---
 
-## Solución de Problemas
+## 5. Solución de Problemas
 Si hay errores en la ejecución de un contenedor, puedes ingresar en modo interactivo:
 ```sh
 docker run --rm -it train-model bash
