@@ -89,6 +89,9 @@ Después de ejecutar los contenedores, revisa:
   ```
   Deberías ver `predictions.csv` o el archivo de salida especificado.
 
+![Docker evidence run](../docs/imgs/evidence.png)
+
+
 ---
 
 ## Solución de Problemas
