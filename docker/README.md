@@ -36,6 +36,7 @@ docker images
 ```
 Deberías ver `train-model` e `inference-model` en la lista.
 
+![Docker images](../docs/imgs/dockerimages.png)
 ---
 
 ## 2. Ejecución de Contenedores
