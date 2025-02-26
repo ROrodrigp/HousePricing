@@ -19,11 +19,16 @@ Ejecuta desde el directorio raíz del proyecto:
 docker build -t train-model -f docker/Dockerfile.train .
 ```
 
+![Docker train build](../docs/imgs/dockerbuildtrain.png)
+
 ### Construir la imagen para inferencia
 Ejecuta desde el directorio raíz del proyecto:
 ```sh
 docker build -t inference-model -f docker/Dockerfile.inference .
 ```
+
+![Docker inference build](../docs/imgs/dockerbuildinference.png)
+
 
 Para verificar que las imágenes se crearon correctamente:
 ```sh

@@ -9,7 +9,7 @@ COPY inference.py .
 COPY src ./src   
 COPY models ./models
 COPY data ./data
-COPY environment.yml .
+COPY docker/environment.yml .
 
 # Crear el entorno Conda dentro del contenedor
 RUN conda env create -f environment.yml && conda clean --all -y
