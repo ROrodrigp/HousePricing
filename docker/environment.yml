@@ -149,7 +149,7 @@ dependencies:
   - libffi=3.4.2
   - libgdal-core=3.10.1
   - libgfortran=5.0.0
-  - libgfortran5=13.2.0
+  - libgfortran5
   - libgoogle-cloud=2.34.0
   - libgoogle-cloud-storage=2.34.0
   - libgrpc=1.67.1
@@ -160,7 +160,7 @@ dependencies:
   - liblapack=3.9.0
   - liblzma=5.6.3
   - libnghttp2=1.64.0
-  - libopenblas=0.3.28
+  - libopenblas=0.3.23
   - libopentelemetry-cpp=1.18.0
   - libopentelemetry-cpp-headers=1.18.0
   - libparquet=18.1.0
@@ -238,8 +238,6 @@ dependencies:
   - pyflakes=3.2.0
   - pygments=2.19.1
   - pylint=3.3.4
-  - pyobjc-core=11.0
-  - pyobjc-framework-cocoa=11.0
   - pyparsing=3.2.1
   - pyproj=3.7.0
   - pysocks=1.7.1
