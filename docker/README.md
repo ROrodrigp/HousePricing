@@ -53,14 +53,17 @@ docker run --rm -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data train-mode
 
 Si deseas usar un archivo de entrada diferente:
 ```sh
-docker run --rm -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data train-model --input data/custom.csv --output models/custom_model.pkl
+docker run --rm -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data train-model --input data/prep.csv --output models/custom_model.pkl
 ```
+
+![Docker train run](../docs/imgs/traindockerrun.png)
+
 
 ---
 
 ### Ejecutar el contenedor de inferencia
 ```sh
-docker run --rm -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data -v $(pwd)/predictions:/app/output inference-model
+docker run --rm -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data -v $(pwd)/predictions:/app/output inference-model --input /app/data/test.csv --output /app/output/user_predictions.csv --model /app/models/custom_model.pkl
 ```
 
 **Explicación:**
@@ -69,10 +72,7 @@ docker run --rm -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data -v $(pwd)/
 - `-v $(pwd)/data:/app/data` → Permite acceder al archivo de entrada (`test.csv`).
 - `-v $(pwd)/predictions:/app/output` → Guarda las predicciones en `predictions/` en la máquina local.
 
-Para usar archivos personalizados:
-```sh
-docker run --rm -v $(pwd)/models:/app/models -v $(pwd)/data:/app/data -v $(pwd)/predictions:/app/output inference-model --input data/userdata.csv --output predictions/user_predictions.csv
-```
+![Docker inf run](../docs/imgs/infdockerrun.png)
 
 ---
 
