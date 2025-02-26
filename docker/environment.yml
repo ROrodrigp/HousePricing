@@ -148,7 +148,6 @@ dependencies:
   - libexpat=2.6.4
   - libffi=3.4.2
   - libgdal-core=3.10.1
-  - libgfortran=5.0.0
   - libgfortran5
   - libgoogle-cloud=2.34.0
   - libgoogle-cloud-storage=2.34.0
